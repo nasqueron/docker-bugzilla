@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ ! -f .initialized ]; then
+    # Container is initialized according the environment variables
+    # passed to the container to setup the application.
+
+    /usr/local/bin/setup-bugzilla
+
+    EXIT_CODE=$?
+    if [ $EXIT_CODE -eq 0 ]; then
+        touch .initialized
+    else
+        exit $EXIT_CODE
+    fi
+fi
+
+/usr/sbin/httpd -DFOREGROUND
